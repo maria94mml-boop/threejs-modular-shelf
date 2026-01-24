@@ -2,7 +2,7 @@ import MaterialManager from './js/MaterialManager.js';
 import UIManager from './js/UIManager.js';
 import ProductLogic from './js/ProductLogic.js';
 
-let scene, camera, renderer, chair, controls;
+let scene, camera, renderer, controls;
 let materialManager, productLogic, uiManager;
 
 init();
@@ -53,6 +53,16 @@ function init() {
     dir.castShadow = true;
     scene.add(dir);
 
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.mindistance = 150;
+    controls.maxDistance = 200;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = true;
+    controls.update();  
+    //controls.target.set(0, 0.5, 0);
+    window.addEventListener('resize', onResize);
+
 }  
 
 /** Función de animación */
@@ -65,12 +75,31 @@ function animate(){
 function loadShelf() {
 
     const loader = new THREE.GLTFLoader();    
-    loader.load('./models/shelf_module.glb', function(gltf) {
-        const shelf = gltf.scene;
-        scene.add(shelf);
+    loader.load('./models/shelf_module.glb', function(glb) {
+        const baseModule = glb.scene;
+        baseModule.traverse(child => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+    });
+
+    const shelfGroup = new THREE.Group();
+    scene.add(shelfGroup);
+
+    productLogic = new ProductLogic(baseModule, shelfGroup);
+    
+
 
     }, undefined, function(error) {
         console.error(error);
     });
+}
+
+/** Función para manejar el redimensionamiento de la ventana */
+function onResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
