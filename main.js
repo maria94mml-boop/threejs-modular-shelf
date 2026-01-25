@@ -48,7 +48,6 @@ function init() {
         exitHideMode(uiPanel,sideControls, exitHideBtn,grid,axes);
     };
 
-
     /**Configuración de la cámara */
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0,36,125);
@@ -108,16 +107,28 @@ function loadShelf() {
 
     productLogic = new ProductLogic(baseModule, shelfGroup);
 
+
     productLogic.onChange = () => {
-        frameShelf(shelfGroup);
+        handleShelfChange(productLogic, shelfGroup);
     }
-    
-    frameShelf(shelfGroup);
+
+    handleShelfChange(productLogic, shelfGroup);
+    setupSaveWidget(productLogic);
     uiManager = new UIManager(productLogic);
 
     }, undefined, function(error) {
         console.error(error);
     });
+}
+
+/** Función para manejar los cambios en la estantería */
+function handleShelfChange(productLogic, shelfGroup) {
+    const config = getShelfConfigJSON();
+
+    console.log("Current configuration:");
+    console.log(JSON.stringify(config, null, 2));
+
+    frameShelf(shelfGroup);
 }
 
 /** Función para ajustar la cámara a la estantería */
@@ -164,37 +175,88 @@ function frameShelf(shelfGroup) {
 
 /** Función para manejar el redimensionamiento de la ventana */
 function onResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 /** Función para entrar en el modo oculto */
 function enterHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
 
-  /* Ocultar UI */
-  uiPanel.style.display = "none";
-  sideControls.style.display = "none";
+    /* Ocultar UI */
+    uiPanel.style.display = "none";
+    sideControls.style.display = "none";
 
-  /* Ocultar helpers */
-  grid.visible = false;
-  axes.visible = false;
+    /* Ocultar helpers */
+    grid.visible = false;
+    axes.visible = false;
 
-  /* Mostrar botón X */
-  exitHideBtn.style.display = "block";
+    /* Mostrar botón X */
+    exitHideBtn.style.display = "block";
 }
 
 /** Función para salir del modo oculto */
 function exitHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
 
-  /* Mostrar UI */
-  uiPanel.style.display = "block";
-  sideControls.style.display = "flex";
+    /* Mostrar UI */
+    uiPanel.style.display = "block";
+    sideControls.style.display = "flex";
 
-  /* Restaurar visibilidad de helpers */
-  grid.visible = helpersVisible;
-  axes.visible = helpersVisible;
+    /* Restaurar visibilidad de helpers */
+    grid.visible = helpersVisible;
+    axes.visible = helpersVisible;
 
-  /* Ocultar botón X */
-  exitHideBtn.style.display = "none";
+    /* Ocultar botón X */
+    exitHideBtn.style.display = "none";
 }
+
+/** Función para obtener la configuración de la estantería en formato JSON */
+function getShelfConfigJSON(){
+    const dims = productLogic.getDimensions();
+
+    return {
+        productId: "modular-shelf-001",
+        version: "1.0",
+        exportedAt: new Date().toISOString(),
+        units: "cm",
+        dimensions: dims
+    };   
+}
+
+/** Función para configurar el widget de guardado */
+function setupSaveWidget(productLogic) {
+    const saveBtn = document.getElementById("saveConfig");
+    const jsonWidget = document.getElementById("jsonWidget");
+    const jsonOutput = document.getElementById("jsonOutput");
+    const closeBtn = document.getElementById("closeJson");
+    const copyBtn = document.getElementById("copyJson");
+    const downloadBtn = document.getElementById("downloadJson");
+
+    saveBtn.onclick = () => {
+        const config = getShelfConfigJSON(productLogic);
+        jsonOutput.textContent = JSON.stringify(config, null, 2);
+        jsonWidget.style.display = "flex";
+    };
+
+    closeBtn.onclick = () => {
+        jsonWidget.style.display = "none";
+    };
+
+    copyBtn.onclick = () => {
+        navigator.clipboard.writeText(jsonOutput.textContent);
+    };
+
+    downloadBtn.onclick = () => {
+        const blob = new Blob([jsonOutput.textContent], {
+            type: "application/json"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "shelf-config.json";
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+}
+
