@@ -26,4 +26,13 @@ export default class ProductLogic {
             this.modules.push(module);
         }
     }
+
+    /** Métodos para añadir o quitar niveles */
+    addLevel() {
+        this.setLevels(this.levels + 1);
+    }
+    
+    removeLevel() {
+        this.setLevels(this.levels - 1);
+    }   
 }

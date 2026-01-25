@@ -94,7 +94,7 @@ function loadShelf() {
         frameShelf(shelfGroup);
     }
 
-    productLogic.setLevels(12);
+    productLogic.setLevels(6);
 
     
 
@@ -150,4 +150,3 @@ function onResize() {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
-
