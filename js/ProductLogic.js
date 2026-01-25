@@ -3,10 +3,20 @@ export default class ProductLogic {
     constructor(baseModule, parentGroup) {
         this.baseModule = baseModule;
         this.group = parentGroup;
+
+        /* Dimensiones del módulo */
+        this.moduleWidth = 80;
+        this.moduleDepth = 30;
+        this.moduleHeight = 30;
+
         this.levels = 1;
         this.modules =[];
-        this.MaterialManager = new MaterialManager();
-        this.currentMaterial = this.MaterialManager.getMaterial("wood049");
+        
+        this.materialManager = new MaterialManager();
+        this.currentMaterial = this.materialManager.getMaterial("wood049");
+
+        this.onChange = null;
+
         this.buildShelf();
     }
 
@@ -19,14 +29,12 @@ export default class ProductLogic {
     }
 
     buildShelf() {
-        this.modules.forEach(m => this.group.remove(m));
+        this.group.clear();
         this.modules = [];
-        
-
 
         for (let i = 0; i < this.levels; i++) {
             const module = this.baseModule.clone(true);
-            module.position.y = i * 30; // altura del módulo en cm
+            module.position.set(0,i* this.moduleHeight, 0);
             module.traverse(child => {
                 if (child.isMesh) {
                     child.material = this.currentMaterial;
@@ -35,6 +43,19 @@ export default class ProductLogic {
             this.group.add(module);
             this.modules.push(module);
         }
+    }
+    getTotalHeight() {
+        return this.levels * this.moduleHeight;
+    }
+
+    getDimensions() {
+        return {
+            width: this.moduleWidth,
+            depth: this.moduleDepth,
+            moduleHeight: this.moduleHeight,
+            totalHeight: this.getTotalHeight(),
+            levels: this.levels
+        };
     }
 
     /** Métodos para añadir o quitar niveles */

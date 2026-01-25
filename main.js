@@ -94,9 +94,12 @@ function loadShelf() {
         frameShelf(shelfGroup);
     }
 
-    productLogic.setLevels(6);
+    productLogic.setLevels(1);
 
-    
+    uiManager = new UIManager(productLogic);
+    console.log("UIManager creado", productLogic);
+
+
 
     }, undefined, function(error) {
         console.error(error);

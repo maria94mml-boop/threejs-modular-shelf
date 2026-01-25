@@ -1,11 +1,47 @@
-<!DOCTYPE html>º
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>3D Configurator</title>
+    <style>
+      #ui {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px;
+      border-radius: 8px;
+      font-family: sans-serif;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div id="ui"></div>
+    <div id="ui">
+      <div class="controls">
+        <button id="removeLevel">−</button>
+        <span id="levelCount">1</span>
+        <button id="addLevel">+</button>
+      </div>
+      <div class="dimensions">
+        <div>Ancho: <span id="dimWidth"></span> cm</div>
+        <div>Fondo: <span id="dimDepth"></span> cm</div>
+        <div>Altura módulo: <span id="dimModuleHeight"></span> cm</div>
+        <div>Altura total: <span id="dimTotalHeight"></span> cm</div>
+      </div>
+    </div>
     <canvas id="canvas"></canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
