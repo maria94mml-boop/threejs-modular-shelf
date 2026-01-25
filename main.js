@@ -20,7 +20,7 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf2f2f2);
 
-    /**Utilización de helpers */
+    /**Utilización de helpers (grid y axes) */
     const grid = new THREE.GridHelper(200, 10);
     scene.add(grid);
     const axes = new THREE.AxesHelper(100);
@@ -34,6 +34,7 @@ function init() {
         axes.visible = helpersVisible;
     };
 
+    /** Botones de ocultar UI */
     const hideBtn = document.getElementById("toggleHide");
     const exitHideBtn = document.getElementById("exitHide");
     const uiPanel = document.getElementById("ui");
@@ -57,17 +58,10 @@ function init() {
         canvas: document.getElementById("canvas"),
         antialias: true
     });
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
-
-    /** Creación de un cubo ejemplo */
-    /*
-    const geometry = new THREE.BoxGeometry(20,20,20);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.castShadow = true;
-    scene.add(cube);*/
 
     /**Configuración de luces AmbientLight y DirectionalLight */
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
@@ -76,14 +70,16 @@ function init() {
     dir.castShadow = true;
     scene.add(dir);
 
+    /**Configuración de los controles de órbita */
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.mindistance = 150;
+    controls.minDistance = 150;
     controls.maxDistance = 300;
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enableZoom = true;
     controls.update();  
-    //controls.target.set(0, 0.5, 0);
+
+    /**Evento de redimensionamiento de la ventana */
     window.addEventListener('resize', onResize);
 
 }  
@@ -113,16 +109,11 @@ function loadShelf() {
     productLogic = new ProductLogic(baseModule, shelfGroup);
 
     productLogic.onChange = () => {
-        console.log("Configuración de la estantería cambiada.");
         frameShelf(shelfGroup);
     }
-
-    //productLogic.setLevels(1);
-
+    
+    frameShelf(shelfGroup);
     uiManager = new UIManager(productLogic);
-    console.log("UIManager creado", productLogic);
-
-
 
     }, undefined, function(error) {
         console.error(error);
@@ -132,6 +123,7 @@ function loadShelf() {
 /** Función para ajustar la cámara a la estantería */
 function frameShelf(shelfGroup) {
 
+    
     if (!shelfGroup) return;
 
     shelfGroup.updateWorldMatrix(true, true);
@@ -144,6 +136,7 @@ function frameShelf(shelfGroup) {
     box.getSize(size);
     box.getCenter(center);
 
+    /** Parámetros para el cálculo de la posición de la cámara */
     const MODULE_HEIGHT = 30;
     const LEVELS_PER_BLOCK = 6;
     const BLOCK_HEIGHT = LEVELS_PER_BLOCK * MODULE_HEIGHT;
@@ -160,8 +153,6 @@ function frameShelf(shelfGroup) {
         center.y + effectiveHeight * 0.12,
         center.z + distance
     );
-    console.log("Centro estantería:", camera.position);
-    console.log("Altura estantería:", size.y);
 
     controls.target.copy(center);
     controls.minDistance = effectiveHeight * 0.25;
@@ -181,29 +172,29 @@ function onResize() {
 /** Función para entrar en el modo oculto */
 function enterHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
 
-  // ocultar UI
+  /* Ocultar UI */
   uiPanel.style.display = "none";
   sideControls.style.display = "none";
 
-  // ocultar helpers
+  /* Ocultar helpers */
   grid.visible = false;
   axes.visible = false;
 
-  // mostrar botón X
+  /* Mostrar botón X */
   exitHideBtn.style.display = "block";
 }
 
 /** Función para salir del modo oculto */
 function exitHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
 
-  // mostrar UI
+  /* Mostrar UI */
   uiPanel.style.display = "block";
   sideControls.style.display = "flex";
 
-  // restaurar helpers según estado anterior
+  /* Restaurar visibilidad de helpers */
   grid.visible = helpersVisible;
   axes.visible = helpersVisible;
 
-  // ocultar botón X
+  /* Ocultar botón X */
   exitHideBtn.style.display = "none";
 }

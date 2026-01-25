@@ -8,14 +8,13 @@ export default class UIManager{
         this.widthLabel = document.getElementById("dimWidth");
         this.depthLabel = document.getElementById("dimDepth");
         this.moduleHeightLabel = document.getElementById("dimModuleHeight");
-        this.totalHeightLabel = document.getElementById("dimTotalHeight");
         this.heightInput = document.getElementById("heightInput");
-
 
         this.bindEvents();
         this.updateUI();
     }
 
+    /** Vincula los eventos de los controles UI */
     bindEvents() {
         if (this.addBtn) {
         this.addBtn.onclick = () => {
@@ -41,6 +40,7 @@ export default class UIManager{
         }
     }
 
+    /** Actualiza los valores mostrados en la UI */
     updateUI() {
         const dims = this.productLogic.getDimensions();
 
@@ -60,9 +60,6 @@ export default class UIManager{
             this.moduleHeightLabel.textContent = dims.moduleHeight;
         }
 
-        if (this.totalHeightLabel) {
-            this.totalHeightLabel.textContent = dims.totalHeight;
-        }
         if (this.heightInput) {
             this.heightInput.value = dims.totalHeight;
         }

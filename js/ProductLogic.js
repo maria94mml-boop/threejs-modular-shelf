@@ -20,19 +20,21 @@ export default class ProductLogic {
         this.buildShelf();
     }
 
+    /** Establece el número de niveles */
     setLevels(levels) {
-        console.log("Ajustando niveles a:", levels);
         const safeLevels = Math.max(1, levels);
         this.levels = safeLevels;
         this.buildShelf();
         if (this.onChange) this.onChange();
     }
 
+    /** Establece la altura total de la estantería */
     setHeight(totalHeight) {
-        const levels = Math.round(totalHeight / this.moduleHeight);
+        const levels = Math.max(1, Math.floor(totalHeight / this.moduleHeight));
         this.setLevels(levels);
     }
 
+    /** Construye la estantería según los niveles actuales */
     buildShelf() {
         this.group.clear();
         this.modules = [];
@@ -49,10 +51,13 @@ export default class ProductLogic {
             this.modules.push(module);
         }
     }
+
+    /** Devuelve la altura total de la estantería */
     getTotalHeight() {
         return this.levels * this.moduleHeight;
     }
 
+    /** Devuelve las dimensiones actuales de la estantería */
     getDimensions() {
         return {
             width: this.moduleWidth,

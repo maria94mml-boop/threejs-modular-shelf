@@ -32,6 +32,7 @@ export default class MaterialManager {
         return material;
     }
 
+    /** Devuelve el material según el tipo */
     getMaterial(type) {
         switch (type) {
         case "wood049":
