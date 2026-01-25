@@ -29,20 +29,27 @@
   </style>
 </head>
 <body>
-    <div id="ui">
-      <div class="controls">
-        <button id="removeLevel">−</button>
-        <span id="levelCount">1</span>
-        <button id="addLevel">+</button>
+  <canvas id="canvas"></canvas>
+      <div id="ui">
+        <div class="controls">
+          <h5>Estantes:</h5>
+          <button id="removeLevel">−</button>
+          <span id="levelCount">1</span>
+          <button id="addLevel">+</button>
+        </div>
+        <div class="dimensions">
+          <h5>Dimensiones:</h5>
+          <div>Ancho: <span id="dimWidth"></span> cm</div>
+          <div>Fondo: <span id="dimDepth"></span> cm</div>
+          <div>Altura módulo: <span id="dimModuleHeight"></span> cm</div>
+          <div class="height-control">
+            <label>
+              Altura total (cm):
+              <input id="heightInput" type="number" step="30" min="30">
+            </label>
+          </div>
       </div>
-      <div class="dimensions">
-        <div>Ancho: <span id="dimWidth"></span> cm</div>
-        <div>Fondo: <span id="dimDepth"></span> cm</div>
-        <div>Altura módulo: <span id="dimModuleHeight"></span> cm</div>
-        <div>Altura total: <span id="dimTotalHeight"></span> cm</div>
-      </div>
-    </div>
-    <canvas id="canvas"></canvas>
+    </canvas>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>

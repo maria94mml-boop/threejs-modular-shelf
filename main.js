@@ -26,8 +26,7 @@ function init() {
 
     /**Configuración de la cámara */
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0,100,150);
-    camera.lookAt(0,0,0);
+    camera.position.set(0,36,125);
 
     /**Configuración del renderer */
     renderer = new THREE.WebGLRenderer({
@@ -94,7 +93,7 @@ function loadShelf() {
         frameShelf(shelfGroup);
     }
 
-    productLogic.setLevels(1);
+    //productLogic.setLevels(1);
 
     uiManager = new UIManager(productLogic);
     console.log("UIManager creado", productLogic);
@@ -137,6 +136,7 @@ function frameShelf(shelfGroup) {
         center.y + effectiveHeight * 0.12,
         center.z + distance
     );
+    console.log("Centro estantería:", camera.position);
     console.log("Altura estantería:", size.y);
 
     controls.target.copy(center);

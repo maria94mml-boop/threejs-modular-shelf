@@ -11,7 +11,7 @@ export default class ProductLogic {
 
         this.levels = 1;
         this.modules =[];
-        
+
         this.materialManager = new MaterialManager();
         this.currentMaterial = this.materialManager.getMaterial("wood049");
 
@@ -26,6 +26,11 @@ export default class ProductLogic {
         this.levels = safeLevels;
         this.buildShelf();
         if (this.onChange) this.onChange();
+    }
+
+    setHeight(totalHeight) {
+        const levels = Math.round(totalHeight / this.moduleHeight);
+        this.setLevels(levels);
     }
 
     buildShelf() {
