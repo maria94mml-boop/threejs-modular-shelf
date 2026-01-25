@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>3D Configurator</title>
     <style>
-      #ui {
+    #ui {
       position: fixed;
       top: 20px;
       left: 20px;
@@ -26,30 +26,94 @@
       padding: 4px 10px;
       cursor: pointer;
     }
+    #side-controls {
+      position: absolute;
+      top: 10%;
+      right: 20px;
+      transform: translateY(-30%);
+
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      z-index: 50;
+    }
+
+    #side-controls button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+
+      border: none;
+      background: #818181;
+      color: white;
+      cursor: pointer;
+
+      font-size: 10px;
+    }
+
+    #side-controls button:hover {
+      background: #333;
+    }
+    #exitHide {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+
+      border: none;
+      background: #818181;
+      color: rgb(0, 0, 0);
+
+      font-size: 22px;
+      cursor: pointer;
+
+      z-index: 50;
+      display: none;
+    }
+
+    #exitHide:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
-      <div id="ui">
-        <div class="controls">
-          <h5>Estantes:</h5>
-          <button id="removeLevel">−</button>
-          <span id="levelCount">1</span>
-          <button id="addLevel">+</button>
-        </div>
-        <div class="dimensions">
-          <h5>Dimensiones:</h5>
-          <div>Ancho: <span id="dimWidth"></span> cm</div>
-          <div>Fondo: <span id="dimDepth"></span> cm</div>
-          <div>Altura módulo: <span id="dimModuleHeight"></span> cm</div>
-          <div class="height-control">
-            <label>
-              Altura total (cm):
-              <input id="heightInput" type="number" step="30" min="30">
-            </label>
-          </div>
+    <div id="side-controls">
+        <button id="toggleHelpers">
+          <img src="./icons/helpers.png" alt="Toggle Helpers" width="24" height="24">
+        </button>
+        <button id="toggleHide">
+          <img src="./icons/hide.png" alt="Hide UI" width="24" height="24">
+        </button>
+    </div>
+    <button id="exitHide" aria-label="Salir">✕</button>
+
+    <div id="ui">
+      <div class="controls">
+        <h5>Estantes:</h5>
+        <button id="removeLevel">−</button>
+        <span id="levelCount">1</span>
+        <button id="addLevel">+</button>
       </div>
-    </canvas>
+      <div class="dimensions">
+        <h5>Dimensiones:</h5>
+        <div>Ancho: <span id="dimWidth"></span> cm</div>
+        <div>Fondo: <span id="dimDepth"></span> cm</div>
+        <div>Altura módulo: <span id="dimModuleHeight"></span> cm</div>
+        <div class="height-control">
+          <label>
+            Altura total (cm):
+            <input id="heightInput" type="number" step="30" min="30">
+          </label>
+        </div>
+      </div>
+    </div>
+      
+  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>

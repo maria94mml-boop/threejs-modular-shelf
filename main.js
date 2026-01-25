@@ -4,6 +4,8 @@ import ProductLogic from './js/ProductLogic.js';
 
 let scene, camera, renderer, controls;
 let materialManager, productLogic, uiManager;
+let helpersVisible = true;
+
 
 init();
 loadShelf();
@@ -23,6 +25,28 @@ function init() {
     scene.add(grid);
     const axes = new THREE.AxesHelper(100);
     scene.add(axes);
+
+    const helpersBtn = document.getElementById("toggleHelpers");
+
+    helpersBtn.onclick = () => {
+        helpersVisible = !helpersVisible;
+        grid.visible = helpersVisible;
+        axes.visible = helpersVisible;
+    };
+
+    const hideBtn = document.getElementById("toggleHide");
+    const exitHideBtn = document.getElementById("exitHide");
+    const uiPanel = document.getElementById("ui");
+    const sideControls = document.getElementById("side-controls");
+
+    hideBtn.onclick = () => {
+        enterHideMode(uiPanel,sideControls, exitHideBtn,grid,axes);
+    };
+
+    exitHideBtn.onclick = () => {
+        exitHideMode(uiPanel,sideControls, exitHideBtn,grid,axes);
+    };
+
 
     /**Configuración de la cámara */
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -152,4 +176,34 @@ function onResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+/** Función para entrar en el modo oculto */
+function enterHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
+
+  // ocultar UI
+  uiPanel.style.display = "none";
+  sideControls.style.display = "none";
+
+  // ocultar helpers
+  grid.visible = false;
+  axes.visible = false;
+
+  // mostrar botón X
+  exitHideBtn.style.display = "block";
+}
+
+/** Función para salir del modo oculto */
+function exitHideMode(uiPanel,sideControls, exitHideBtn, grid, axes) {
+
+  // mostrar UI
+  uiPanel.style.display = "block";
+  sideControls.style.display = "flex";
+
+  // restaurar helpers según estado anterior
+  grid.visible = helpersVisible;
+  axes.visible = helpersVisible;
+
+  // ocultar botón X
+  exitHideBtn.style.display = "none";
 }
