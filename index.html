@@ -28,9 +28,8 @@
     }
     #side-controls {
       position: absolute;
-      top: 10%;
+      top: 25px;
       right: 20px;
-      transform: translateY(-30%);
 
       display: flex;
       flex-direction: column;
@@ -45,7 +44,7 @@
       border-radius: 50%;
 
       border: none;
-      background: #818181;
+      background: #e0e0e0;
       color: white;
       cursor: pointer;
 
@@ -53,11 +52,11 @@
     }
 
     #side-controls button:hover {
-      background: #333;
+      background: rgb(149, 149, 149)e4e;
     }
     #exitHide {
       position: absolute;
-      top: 20px;
+      top: 25px;
       right: 20px;
 
       width: 50px;
@@ -65,7 +64,7 @@
       border-radius: 50%;
 
       border: none;
-      background: #818181;
+      background: #e0e0e0;
       color: rgb(0, 0, 0);
 
       font-size: 22px;
@@ -76,18 +75,73 @@
     }
 
     #exitHide:hover {
-      background: rgba(0, 0, 0, 0.9);
+      background: rgb(149, 149, 149)e4e;
+    }
+    #jsonWidget {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+
+      width: 360px;
+      max-height: 50vh;
+
+      background: #111;
+      color: #eee;
+      border-radius: 8px;
+      padding: 12px;
+
+      display: none;
+      flex-direction: column;
+      z-index: 40;
+    }
+
+    .json-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .json-header button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #jsonOutput {
+      background: #1c1c1c;
+      padding: 8px;
+      border-radius: 4px;
+      overflow: auto;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .json-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .json-actions button {
+      flex: 1;
+      padding: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
     <div id="side-controls">
+        <button id="toggleHide">
+          <img src="./icons/hide.png" alt="Hide UI" width="24" height="24">
+        </button>
         <button id="toggleHelpers">
           <img src="./icons/helpers.png" alt="Toggle Helpers" width="24" height="24">
         </button>
-        <button id="toggleHide">
-          <img src="./icons/hide.png" alt="Hide UI" width="24" height="24">
+        <button id="saveConfig">
+          <img src="./icons/json.png" alt="json" width="24" height="24">
         </button>
     </div>
     <button id="exitHide" aria-label="Salir">✕</button>
@@ -98,6 +152,7 @@
         <button id="removeLevel">−</button>
         <span id="levelCount">1</span>
         <button id="addLevel">+</button>
+        
       </div>
       <div class="dimensions">
         <h5>Dimensiones:</h5>
@@ -110,6 +165,21 @@
             <input id="heightInput" type="number" step="30" min="30">
           </label>
         </div>
+      </div>
+      
+
+    </div>
+    <div id="jsonWidget">
+      <div class="json-header">
+        <span>Configuración JSON</span>
+        <button id="closeJson">✕</button>
+      </div>
+
+      <pre id="jsonOutput"></pre>
+
+      <div class="json-actions">
+        <button id="copyJson">Copiar</button>
+        <button id="downloadJson">Guardar</button>
       </div>
     </div>
       
