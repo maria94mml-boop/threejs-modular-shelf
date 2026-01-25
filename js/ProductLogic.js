@@ -7,6 +7,14 @@ export default class ProductLogic {
         this.buildShelf();
     }
 
+    setLevels(levels) {
+        console.log("Ajustando niveles a:", levels);
+        const safeLevels = Math.max(1, levels);
+        this.levels = safeLevels;
+        this.buildShelf();
+        if (this.onChange) this.onChange();
+    }
+
     buildShelf() {
         this.modules.forEach(m => this.group.remove(m));
         this.modules = [];

@@ -55,7 +55,7 @@ function init() {
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.mindistance = 150;
-    controls.maxDistance = 200;
+    controls.maxDistance = 300;
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enableZoom = true;
@@ -88,12 +88,60 @@ function loadShelf() {
     scene.add(shelfGroup);
 
     productLogic = new ProductLogic(baseModule, shelfGroup);
-    
 
+    productLogic.onChange = () => {
+        console.log("Configuración de la estantería cambiada.");
+        frameShelf(shelfGroup);
+    }
+
+    productLogic.setLevels(12);
+
+    
 
     }, undefined, function(error) {
         console.error(error);
     });
+}
+
+/** Función para ajustar la cámara a la estantería */
+function frameShelf(shelfGroup) {
+
+    if (!shelfGroup) return;
+
+    shelfGroup.updateWorldMatrix(true, true);
+
+    const box = new THREE.Box3().setFromObject(shelfGroup);
+
+    const size = new THREE.Vector3();
+    const center = new THREE.Vector3();
+
+    box.getSize(size);
+    box.getCenter(center);
+
+    const MODULE_HEIGHT = 30;
+    const LEVELS_PER_BLOCK = 6;
+    const BLOCK_HEIGHT = LEVELS_PER_BLOCK * MODULE_HEIGHT;
+
+    /* Calcular altura por bloques de 6 niveles */
+    const realHeight = size.y;
+    const blockIndex = Math.max(1, Math.ceil(realHeight / BLOCK_HEIGHT));
+    const effectiveHeight = blockIndex * BLOCK_HEIGHT;
+
+    const distance = effectiveHeight * 0.7 ;
+
+    camera.position.set(
+        center.x,
+        center.y + effectiveHeight * 0.12,
+        center.z + distance
+    );
+    console.log("Altura estantería:", size.y);
+
+    controls.target.copy(center);
+    controls.minDistance = effectiveHeight * 0.25;
+    controls.maxDistance = effectiveHeight * 2;
+
+    controls.update();
+
 }
 
 /** Función para manejar el redimensionamiento de la ventana */
