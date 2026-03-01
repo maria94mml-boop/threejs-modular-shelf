@@ -128,3 +128,6 @@ Example output:
 
 Simply open index.html using a local server (e.g. VS Code Live Server).
 No build step required.
+
+## 🚀 Demo en vivo
+👉 [Ver proyecto](https://maria94mml-boop.github.io/threejs-modular-shelf/)
