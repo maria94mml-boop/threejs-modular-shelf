@@ -1,4 +1,3 @@
-import MaterialManager from './js/MaterialManager.js';
 import UIManager from './js/UIManager.js';
 import ProductLogic from './js/ProductLogic.js';
 
@@ -86,6 +85,7 @@ function init() {
 /** Función de animación */
 function animate(){
     requestAnimationFrame(animate);
+    controls.update();
     renderer.render(scene, camera); 
 }
 
@@ -126,8 +126,7 @@ function handleShelfChange(productLogic, shelfGroup) {
     const config = getShelfConfigJSON();
 
     console.log("Current configuration:");
-    console.log(JSON.stringify(config, null, 2));
-
+    console.log(JSON.stringify(config, null, 2));    
     frameShelf(shelfGroup);
 }
 
@@ -233,7 +232,7 @@ function setupSaveWidget(productLogic) {
     const downloadBtn = document.getElementById("downloadJson");
 
     saveBtn.onclick = () => {
-        const config = getShelfConfigJSON(productLogic);
+        const config = getShelfConfigJSON();
         jsonOutput.textContent = JSON.stringify(config, null, 2);
         jsonWidget.style.display = "flex";
     };
